@@ -6,10 +6,11 @@ import java.util.ArrayList;
 
 @RestController
 public class GradeController {
-    public ArrayList listGrades;
+    
+     public ArrayList<Integer> listGrades;
 
     public GradeController() {
-        listGrades =new ArrayList();
+        listGrades =new ArrayList<Integer>();
     }
 
     @GetMapping("/grade")
@@ -19,7 +20,7 @@ public class GradeController {
 
     @PostMapping("/grade")
     public String setGrade(@RequestBody String grade){
-        listGrades.add(grade);
+        listGrades.add(Integer.parseInt(grade));
         return "grade added";
     }
 
@@ -27,7 +28,7 @@ public class GradeController {
 
     @PutMapping("/grade/{index}")
     public String updateGrade(@PathVariable int index,@RequestBody String grade){
-        listGrades.set(index,grade);
+        listGrades.set(index,Integer.parseInt(grade));
         return "grade updated";
     }
 
@@ -36,6 +37,7 @@ public class GradeController {
         listGrades.remove(index);
         return "grade deleted";
     }
+
 
 
 
