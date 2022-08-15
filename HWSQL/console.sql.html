@@ -1,0 +1,94 @@
+<html>
+<head>
+<title>console.sql</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #808080;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #cc7832;}
+.s3 { color: #6897bb;}
+.s4 { color: #6a8759;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+console.sql</font>
+</center></td></tr></table>
+<pre><span class="s0">#DDl</span>
+<span class="s0">#1</span>
+<span class="s2">create database </span><span class="s1">store</span><span class="s2">;</span>
+
+<span class="s2">create table </span><span class="s1">countries(</span>
+    <span class="s2">code int primary key ,</span>
+    <span class="s2">name varchar</span><span class="s1">(</span><span class="s3">20</span><span class="s1">) </span><span class="s2">UNIQUE ,</span>
+    <span class="s1">continent_name </span><span class="s2">varchar</span><span class="s1">(</span><span class="s3">20</span><span class="s1">) </span><span class="s2">not null</span>
+<span class="s1">)</span><span class="s2">;</span>
+
+<span class="s2">Create table </span><span class="s1">users(</span>
+    <span class="s1">id </span><span class="s2">int primary key ,</span>
+    <span class="s1">full_name </span><span class="s2">varchar</span><span class="s1">(</span><span class="s3">20</span><span class="s1">)</span><span class="s2">,</span>
+    <span class="s1">email </span><span class="s2">varchar</span><span class="s1">(</span><span class="s3">20</span><span class="s1">) </span><span class="s2">unique,</span>
+    <span class="s1">gender </span><span class="s2">char</span><span class="s1">(</span><span class="s3">1</span><span class="s1">) </span><span class="s2">check </span><span class="s1">( gender=</span><span class="s4">'f' </span><span class="s2">or </span><span class="s1">gender=</span><span class="s4">'m' </span><span class="s1">)</span><span class="s2">,</span>
+    <span class="s1">date_of_birth </span><span class="s2">varchar</span><span class="s1">(</span><span class="s3">15</span><span class="s1">)</span><span class="s2">,</span>
+    <span class="s1">created_at </span><span class="s2">datetime default </span><span class="s1">now()</span><span class="s2">,</span>
+    <span class="s1">country_code </span><span class="s2">int,</span>
+    <span class="s2">foreign key</span><span class="s1">(country_code) </span><span class="s2">references </span><span class="s1">countries(</span><span class="s2">code</span><span class="s1">)</span>
+<span class="s1">)</span><span class="s2">;</span>
+
+<span class="s2">create table </span><span class="s1">orders(</span>
+    <span class="s1">id </span><span class="s2">int primary key,</span>
+    <span class="s1">user_id </span><span class="s2">int,</span>
+    <span class="s2">status varchar</span><span class="s1">(</span><span class="s3">6</span><span class="s1">) </span><span class="s2">check </span><span class="s1">(</span><span class="s2">status</span><span class="s1">=</span><span class="s4">'start' </span><span class="s2">or status</span><span class="s1">=</span><span class="s4">'finish'</span><span class="s1">)</span><span class="s2">,</span>
+    <span class="s1">creaated_at </span><span class="s2">datetime,</span>
+    <span class="s2">foreign key </span><span class="s1">(user_id) </span><span class="s2">references </span><span class="s1">users(id)</span>
+<span class="s1">)</span><span class="s2">;</span>
+
+<span class="s2">create table </span><span class="s1">products(</span>
+    <span class="s1">id </span><span class="s2">int primary key ,</span>
+    <span class="s2">name varchar</span><span class="s1">(</span><span class="s3">10</span><span class="s1">) </span><span class="s2">not null ,</span>
+    <span class="s1">price </span><span class="s2">int default</span><span class="s1">(</span><span class="s3">0</span><span class="s1">)</span><span class="s2">,</span>
+    <span class="s2">status varchar</span><span class="s1">(</span><span class="s3">10</span><span class="s1">) </span><span class="s2">check </span><span class="s1">(</span><span class="s2">status</span><span class="s1">=</span><span class="s4">'valid' </span><span class="s2">or status</span><span class="s1">=</span><span class="s4">'expired'</span><span class="s1">)</span><span class="s2">,</span>
+    <span class="s1">created_at </span><span class="s2">datetime</span>
+<span class="s1">)</span><span class="s2">;</span>
+
+<span class="s2">create table </span><span class="s1">order_products(</span>
+    <span class="s1">order_id </span><span class="s2">int,</span>
+    <span class="s1">product_id </span><span class="s2">int,</span>
+    <span class="s1">quantity </span><span class="s2">int default </span><span class="s3">0</span><span class="s2">,</span>
+    <span class="s2">primary key </span><span class="s1">(order_id</span><span class="s2">,</span><span class="s1">product_id)</span><span class="s2">,</span>
+    <span class="s2">foreign key </span><span class="s1">(order_id) </span><span class="s2">references </span><span class="s1">orders(id)</span><span class="s2">,</span>
+    <span class="s2">foreign key </span><span class="s1">(product_id) </span><span class="s2">references </span><span class="s1">products(id)</span>
+<span class="s1">)</span><span class="s2">;</span>
+
+
+<span class="s2">alter table </span><span class="s1">users </span><span class="s2">modify </span><span class="s1">created_at </span><span class="s2">datetime default</span><span class="s1">(</span><span class="s2">CURRENT_TIMESTAMP</span><span class="s1">)</span><span class="s2">;</span>
+<span class="s2">alter table </span><span class="s1">orders </span><span class="s2">modify </span><span class="s1">creaated_at </span><span class="s2">datetime default</span><span class="s1">(</span><span class="s2">CURRENT_TIMESTAMP</span><span class="s1">)</span><span class="s2">;</span>
+<span class="s2">alter table </span><span class="s1">products </span><span class="s2">modify </span><span class="s1">created_at </span><span class="s2">datetime default</span><span class="s1">(</span><span class="s2">CURRENT_TIMESTAMP</span><span class="s1">)</span><span class="s2">;</span>
+
+<span class="s0">#DML</span>
+<span class="s0">#Add new row to the countries table.</span>
+<span class="s2">insert into </span><span class="s1">countries </span><span class="s2">values </span><span class="s1">(</span><span class="s3">100</span><span class="s2">,</span><span class="s4">'Saudi Arabia'</span><span class="s2">,</span><span class="s4">'Asia'</span><span class="s1">)</span><span class="s2">;</span>
+<span class="s0"># Add new row to the users table.</span>
+<span class="s2">insert into </span><span class="s1">users </span><span class="s2">values</span><span class="s1">(</span><span class="s3">11</span><span class="s2">,</span><span class="s4">'Shahad'</span><span class="s2">,</span><span class="s4">'s@s.s'</span><span class="s2">,</span><span class="s4">'f'</span><span class="s2">,</span><span class="s4">'01-09-1990'</span><span class="s2">,CURRENT_TIMESTAMP,</span><span class="s3">100</span><span class="s1">)</span><span class="s2">;</span>
+<span class="s0"># Add new row to the orders table.</span>
+<span class="s2">insert into </span><span class="s1">orders </span><span class="s2">values </span><span class="s1">(</span><span class="s3">2</span><span class="s2">,</span><span class="s3">11</span><span class="s2">,</span><span class="s4">'start'</span><span class="s2">,null</span><span class="s1">)</span><span class="s2">;</span>
+<span class="s0"># Add new row to the products table.</span>
+<span class="s2">insert into </span><span class="s1">products </span><span class="s2">values </span><span class="s1">(</span><span class="s3">10</span><span class="s2">,</span><span class="s4">'book'</span><span class="s2">,</span><span class="s3">5</span><span class="s2">,</span><span class="s4">'valid'</span><span class="s2">,</span><span class="s1">now())</span><span class="s2">;</span>
+<span class="s2">insert into </span><span class="s1">products </span><span class="s2">values </span><span class="s1">(</span><span class="s3">11</span><span class="s2">,</span><span class="s4">'toy'</span><span class="s2">,</span><span class="s3">15</span><span class="s2">,</span><span class="s4">'valid'</span><span class="s2">,</span><span class="s1">now())</span><span class="s2">;</span>
+
+<span class="s0"># Add new row to the order_products table.</span>
+<span class="s2">insert into </span><span class="s1">order_products </span><span class="s2">values </span><span class="s1">(</span><span class="s3">2</span><span class="s2">,</span><span class="s3">10</span><span class="s2">,</span><span class="s3">90</span><span class="s1">)</span><span class="s2">;</span>
+<span class="s0"># Update row from countries table.</span>
+<span class="s2">update </span><span class="s1">countries </span><span class="s2">set name</span><span class="s1">=</span><span class="s4">'SA' </span><span class="s2">where code</span><span class="s1">=</span><span class="s3">100</span><span class="s2">;</span>
+<span class="s0"># Delete row from products table.</span>
+<span class="s2">delete from </span><span class="s1">products </span><span class="s2">where </span><span class="s1">id=</span><span class="s3">11</span><span class="s2">;</span>
+
+<span class="s2">select </span><span class="s1">* </span><span class="s2">from </span><span class="s1">countries</span><span class="s2">;</span>
+<span class="s2">select </span><span class="s1">* </span><span class="s2">from </span><span class="s1">users</span><span class="s2">;</span>
+<span class="s2">select </span><span class="s1">* </span><span class="s2">from </span><span class="s1">orders</span><span class="s2">;</span>
+<span class="s2">select </span><span class="s1">* </span><span class="s2">from </span><span class="s1">products</span><span class="s2">;</span>
+<span class="s2">select </span><span class="s1">* </span><span class="s2">from </span><span class="s1">order_products</span><span class="s2">;</span></pre>
+</body>
+</html>
